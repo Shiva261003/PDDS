@@ -2,13 +2,8 @@ import pickle
 import streamlit as st
 from streamlit_option_menu import option_menu
 
-try:
-    with open('parkinsons_model.sav', 'rb') as model_file:
-        parkinsons_model = pickle.load(model_file)
-except Exception as e:
-    st.error(f"Error loading the model: {e}")
-    st.stop()  # Stop the script if the model loading fails
-
+# loading the models
+parkinsons_model = pickle.load(open('parkinsons_model.sav', 'rb'))
 # sidebar for navigation
 with st.sidebar:
     
