@@ -1,157 +1,21 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun May  8 21:01:15 2022
-
-@author: siddhardhan
-"""
-
 import pickle
 import streamlit as st
 from streamlit_option_menu import option_menu
 
 
-# loading the saved models
-
-diabetes_model = pickle.load(open('diabetes_model.sav', 'rb'))
-
-heart_disease_model = pickle.load(open('heart_disease_model.sav', 'rb'))
+# loading the models
 
 parkinsons_model = pickle.load(open('parkinsons_model.sav', 'rb'))
-
-
 
 # sidebar for navigation
 with st.sidebar:
     
-    selected = option_menu('Multiple Disease Prediction System',
+    selected = option_menu('Parkinsons Disease Prediction System',
                           
-                          ['Diabetes Prediction',
-                           'Heart Disease Prediction',
-                           'Parkinsons Prediction'],
-                          icons=['activity','heart','person'],
+                          ['Parkinsons Prediction',
+                           'Information'],
+                          icons=['person','activity'],
                           default_index=0)
-    
-    
-# Diabetes Prediction Page
-if (selected == 'Diabetes Prediction'):
-    
-    # page title
-    st.title('Diabetes Prediction using ML')
-    
-    
-    # getting the input data from the user
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        Pregnancies = st.text_input('Number of Pregnancies')
-        
-    with col2:
-        Glucose = st.text_input('Glucose Level')
-    
-    with col3:
-        BloodPressure = st.text_input('Blood Pressure value')
-    
-    with col1:
-        SkinThickness = st.text_input('Skin Thickness value')
-    
-    with col2:
-        Insulin = st.text_input('Insulin Level')
-    
-    with col3:
-        BMI = st.text_input('BMI value')
-    
-    with col1:
-        DiabetesPedigreeFunction = st.text_input('Diabetes Pedigree Function value')
-    
-    with col2:
-        Age = st.text_input('Age of the Person')
-    
-    
-    # code for Prediction
-    diab_diagnosis = ''
-    
-    # creating a button for Prediction
-    
-    if st.button('Diabetes Test Result'):
-        diab_prediction = diabetes_model.predict([[Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin, BMI, DiabetesPedigreeFunction, Age]])
-        
-        if (diab_prediction[0] == 1):
-          diab_diagnosis = 'The person is diabetic'
-        else:
-          diab_diagnosis = 'The person is not diabetic'
-        
-    st.success(diab_diagnosis)
-
-
-
-
-# Heart Disease Prediction Page
-if (selected == 'Heart Disease Prediction'):
-    
-    # page title
-    st.title('Heart Disease Prediction using ML')
-    
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        age = st.text_input('Age')
-        
-    with col2:
-        sex = st.text_input('Sex')
-        
-    with col3:
-        cp = st.text_input('Chest Pain types')
-        
-    with col1:
-        trestbps = st.text_input('Resting Blood Pressure')
-        
-    with col2:
-        chol = st.text_input('Serum Cholestoral in mg/dl')
-        
-    with col3:
-        fbs = st.text_input('Fasting Blood Sugar > 120 mg/dl')
-        
-    with col1:
-        restecg = st.text_input('Resting Electrocardiographic results')
-        
-    with col2:
-        thalach = st.text_input('Maximum Heart Rate achieved')
-        
-    with col3:
-        exang = st.text_input('Exercise Induced Angina')
-        
-    with col1:
-        oldpeak = st.text_input('ST depression induced by exercise')
-        
-    with col2:
-        slope = st.text_input('Slope of the peak exercise ST segment')
-        
-    with col3:
-        ca = st.text_input('Major vessels colored by flourosopy')
-        
-    with col1:
-        thal = st.text_input('thal: 0 = normal; 1 = fixed defect; 2 = reversable defect')
-        
-        
-     
-     
-    # code for Prediction
-    heart_diagnosis = ''
-    
-    # creating a button for Prediction
-    
-    if st.button('Heart Disease Test Result'):
-        heart_prediction = heart_disease_model.predict([[age, sex, cp, trestbps, chol, fbs, restecg,thalach,exang,oldpeak,slope,ca,thal]])                          
-        
-        if (heart_prediction[0] == 1):
-          heart_diagnosis = 'The person is having heart disease'
-        else:
-          heart_diagnosis = 'The person does not have any heart disease'
-        
-    st.success(heart_diagnosis)
-        
-    
-    
 
 # Parkinson's Prediction Page
 if (selected == "Parkinsons Prediction"):
@@ -243,18 +107,70 @@ if (selected == "Parkinsons Prediction"):
         
     st.success(parkinsons_diagnosis)
 
+if selected == 'Information':
+    st.title('About Parkinsons Disease')
 
+    st.subheader('Select Information Category:')
+    info_category = st.radio(
+        'Choose information category:',
+        ['Overview', 'Symptoms', 'Causes and Risk Factors', 'Diagnosis and Treatment', 'Living with Parkinson\'s', 'Seek Professional Advice', 'External Medications', 'Side Effects']
+    )
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    if info_category == 'Overview':
+        st.write("""
+        Parkinson's disease is a neurodegenerative disorder that affects movement control. 
+        It develops gradually, sometimes starting with a barely noticeable tremor in just one hand. 
+        While tremors are common, the disorder also commonly causes stiffness or slowing of movement.
+        """)
+    elif info_category == 'Symptoms':
+        st.write("""
+        - Tremors: Involuntary shaking, usually in the hands, fingers, or limbs.
+        - Bradykinesia: Slowness of movement, making simple tasks difficult and time-consuming.
+        - Muscle Rigidity: Stiffness of the muscles, which can be uncomfortable and limit range of motion.
+        - Postural Instability: Impaired balance and coordination, leading to difficulties in maintaining an upright posture.
+        - Others: Changes in handwriting, speech, and facial expression.
+        """)
+    elif info_category == 'Causes and Risk Factors':
+        st.write("""
+        The exact cause of Parkinson's disease is unknown, but it is thought to involve a combination of genetic and environmental factors. 
+        Some risk factors include age, family history, and exposure to certain toxins.
+        """)
+    elif info_category == 'Diagnosis and Treatment':
+        st.write("""
+        Diagnosis is based on medical history, symptoms, and sometimes imaging tests. 
+        There is no cure for Parkinson's disease, but treatment options include medications, surgery, and physical therapy to manage symptoms.
+        """)
+    elif info_category == 'Living with Parkinson\'s':
+        st.write("""
+        Living with Parkinson's requires a multidisciplinary approach. 
+        Patients often benefit from support groups, exercise, and a healthcare team that may include neurologists, physical therapists, and occupational therapists.
+        """)
+    elif info_category == 'Seek Professional Advice':
+        st.write("""
+        It's crucial for individuals experiencing symptoms or those diagnosed with Parkinson's to consult with healthcare professionals for personalized advice and treatment.
+        """)
+    elif info_category == 'External Medications':
+        st.write("""
+        In addition to internal medications, some external medications and therapies can help manage Parkinson's symptoms:
+        - Physical therapy for improving mobility and balance
+        - Occupational therapy for activities of daily living
+        - Speech therapy for speech and swallowing difficulties
+        - Assistive devices to aid in movement and daily tasks
+        """)
+        st.write("""
+        Consult with your healthcare team to determine the most suitable external interventions for your specific needs.
+        """)
+    elif info_category == 'Side Effects':
+        st.write("""
+        Some common side effects of Parkinson's medications may include:
+        - Nausea
+        - Dizziness
+        - Constipation
+        - Hallucinations
+        - Sleep disturbances
+        - Dyskinesia (involuntary movements)
+        - Mood changes
+        """)
+        st.write("""
+        If you experience severe or persistent side effects, it's important to contact your healthcare provider.
+        """)
